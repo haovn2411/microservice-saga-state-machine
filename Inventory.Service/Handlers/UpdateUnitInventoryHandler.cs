@@ -26,11 +26,12 @@ namespace Inventory.Service.API.Handlers
             }
             else
             {
+                inventoryEntity.unit = inventoryEntity.unit - context.Message.quantity;
+                _dbcontext.inventories.Update(inventoryEntity);
+                _dbcontext.SaveChanges();
                 await context.Publish(new InventoryOrderedSuccess
                 {
                     OrderId = context.Message.orderId,
-                    InventoryId = context.Message.inventoryId,
-                    Quantity = context.Message.quantity
                 });
             }
         }

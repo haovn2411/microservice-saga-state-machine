@@ -24,5 +24,14 @@ namespace Payment.Service.API.Controllers
             });
             return Ok();
         }
+        [HttpPost("test-fail")]
+        public async Task<IActionResult> PaymentFail(string orderId)
+        {
+            await _publishEndpoint.Publish(new PaymentFailed
+            {
+                OrderId = Guid.Parse(orderId),
+            });
+            return Ok();
+        }
     }
 }

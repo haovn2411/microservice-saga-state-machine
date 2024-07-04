@@ -34,6 +34,7 @@ namespace Order.Service.API.SagaStateMachine
                     {
                         context.Saga.OrderId = context.Message.OrderId;
                         context.Saga.ProductId = context.Message.InventoryId;
+                        context.Saga.Quantity = context.Message.Quantity;
                     })
                     .TransitionTo(InventoryChecking)
                     .Publish(context => new UpdateUnitInventory
@@ -72,9 +73,9 @@ namespace Order.Service.API.SagaStateMachine
                 .TransitionTo(PaymentFailure)
                 .Publish(context => new CompensateInventory
                 {
-                    inventoryId = context.Message.InventoryId,
-                    orderId = context.Message.OrderId,
-                    quantity = context.Message.Quantity,
+                    inventoryId = context.Saga.ProductId,
+                    orderId = context.Saga.OrderId,
+                    quantity = context.Saga.Quantity,
                 }));
             SetCompletedWhenFinalized();
         }

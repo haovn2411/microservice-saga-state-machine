@@ -15,8 +15,6 @@ namespace Contract
     public class InventoryOrderedSuccess
     {
         public Guid OrderId { get; set; }
-        public string InventoryId { get; set; }
-        public int Quantity { get; set; }
     }
     public class InventoryOrderedFailed
     {
@@ -29,7 +27,5 @@ namespace Contract
     public class PaymentFailed
     {
         public Guid OrderId { get; set; }
-        public string InventoryId { get; set; }
-        public int Quantity { get; set; }
     }
 }

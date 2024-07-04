@@ -3,6 +3,8 @@ using MassTransit;
 using MassTransit.Transports;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Order.Service.API.Database;
 using OrderService.Database;
 
 namespace OrderService.Controllers
@@ -12,6 +14,7 @@ namespace OrderService.Controllers
     public class OrderController : ControllerBase
     {
         private readonly IPublishEndpoint _publishEndpoint;
+        private readonly OrderContext _context;
 
         //[HttpGet]
         //public IActionResult GetOrders()
@@ -27,9 +30,10 @@ namespace OrderService.Controllers
         //    result.add(productEntity);
         //    return Ok(result.getProducts());
         //}
-        public OrderController(IPublishEndpoint publishEndpoint)
+        public OrderController(IPublishEndpoint publishEndpoint, OrderContext context)
         {
             _publishEndpoint = publishEndpoint;
+            _context = context;
         }
 
         [HttpPost]
@@ -42,6 +46,12 @@ namespace OrderService.Controllers
                Quantity = quantity
             });
             return Ok();
+        }
+        [HttpGet]
+        public IActionResult GetOrders()
+        {
+            var listProduct = _context.orders.ToList();
+            return Ok(listProduct);
         }
 
     }
